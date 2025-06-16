@@ -11,6 +11,8 @@ import com.sheoanna.monster_shop.repositories.ReviewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class ReviewService {
     private final ReviewRepository reviewRepository;
@@ -23,16 +25,21 @@ public class ReviewService {
         this.productService = productService;
     }
 
+    public List<ReviewResponseDto> getAllReviews(){
+        List<Review> reviews = reviewRepository.findAll();
+        return reviews.stream().map(review -> ReviewMapper.entityToDto(review)).toList();
+    }
+
     @Transactional
     public ReviewResponseDto createReview(Long productId, ReviewRequestDto dto) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
         Review review = ReviewMapper.dtoToEntity(dto);
-        review.setProduct(product);
+
+        review.setProduct(product);//??? or put to dtos as args if posible change models from requirements
 
         reviewRepository.save(review);
-
 
         productService.updateRatingAndCount(product);
 

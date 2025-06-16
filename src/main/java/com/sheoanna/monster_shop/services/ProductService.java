@@ -5,6 +5,7 @@ import com.sheoanna.monster_shop.dtos.product.ProductRequestDto;
 
 import com.sheoanna.monster_shop.dtos.product.ProductResponseDto;
 import com.sheoanna.monster_shop.exception.product.ProductAlreadyExistsException;
+import com.sheoanna.monster_shop.exception.product.ProductNotFoundException;
 import com.sheoanna.monster_shop.models.Product;
 import com.sheoanna.monster_shop.models.Review;
 import com.sheoanna.monster_shop.repositories.ProductRepository;
@@ -24,6 +25,12 @@ public class ProductService {
     public List<ProductResponseDto> getAllProducts(){
         List<Product> products = productRepository.findAll();
         return products.stream().map(product -> ProductMapper.entityToDto(product)).toList();
+    }
+
+    public ProductResponseDto getProductById(Long id) {
+       Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id " + id + " not found!"));
+
+       return ProductMapper.entityToDto(product);
     }
 
     @Transactional

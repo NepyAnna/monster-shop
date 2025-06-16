@@ -10,7 +10,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/products")
+@RequestMapping("/api/products")
 public class ProductController {
     private final ProductService productService;
 
@@ -23,6 +23,13 @@ public class ProductController {
     public ResponseEntity<List<ProductResponseDto>> showAllProducts(){
         List<ProductResponseDto> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
+    }
+
+    @GetMapping
+    @RequestMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> showProductById(@PathVariable Long id) {
+        ProductResponseDto productById = productService.getProductById(id);
+        return ResponseEntity.ok(productById);
     }
 
     @PostMapping("")

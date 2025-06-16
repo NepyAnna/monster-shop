@@ -1,11 +1,9 @@
 package com.sheoanna.monster_shop.dtos.review;
 
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
-public record ReviewRequestDto(Long id,
+public record ReviewRequestDto(@Null
+                               Long id,
                                @NotBlank(message = "Username is required")
                                @Size(max = 50, message = "Username must be at most 50 characters")
                                String username,
