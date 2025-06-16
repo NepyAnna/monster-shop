@@ -1,6 +1,10 @@
 package com.sheoanna.monster_shop.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -21,11 +25,15 @@ public class Product {
     @Column(name="rating")
     private double rating;
 
-    @Column(name="review_count", length = 50)
+    @Column(name="review_count")
     private int reviewCount;
 
     @Column(name = "featured")
     private boolean featured;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
 
     public Product() {
     }
@@ -61,6 +69,10 @@ public class Product {
 
     public int getReviewCount() {
         return reviewCount;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
     }
 
     public boolean isFeatured() {
