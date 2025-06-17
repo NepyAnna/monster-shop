@@ -16,31 +16,47 @@ import java.util.List;
 
 @Service
 public class ProductService {
-    private  final ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    public List<ProductResponseDto> getAllProducts(){
-        List<Product> products = productRepository.findAll();
-        return products.stream().map(product -> ProductMapper.entityToDto(product)).toList();
+    public List<ProductResponseDto> getAllProducts() {
+        return productRepository.findAll().stream()
+                .map(ProductMapper::entityToDto)
+                .toList();
     }
 
     public ProductResponseDto getProductById(Long id) {
-       Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id " + id + " not found!"));
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id " + id + " not found!"));
 
-       return ProductMapper.entityToDto(product);
+        return ProductMapper.entityToDto(product);
     }
 
     @Transactional
     public ProductResponseDto storeProduct(ProductRequestDto newProduct) {
-        if(productRepository.findByName(newProduct.name()) != null){
+        if (productRepository.findByName(newProduct.name()) != null) {
             throw new ProductAlreadyExistsException("Monster with such name already exist!");
         }
         Product product = ProductMapper.dtoToEntity(newProduct);
         Product savedProduct = productRepository.save(product);
         return ProductMapper.entityToDto(savedProduct);
+    }
+
+   /* @Transactional
+    public ProductResponseDto updateProductByID(ProductRequestDto newProduct){
+        if (!productRepository.existsById(newProduct.id())) {
+            throw new ProductNotFoundException("Monster with id " + newProduct.id() + " not found!");
+        }
+
+    }
+*/
+    public void deleteProductByID(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new ProductNotFoundException("Product with id " + id + " not found!");
+        }
+        productRepository.deleteById(id);
     }
 
     @Transactional

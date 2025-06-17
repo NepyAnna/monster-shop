@@ -4,6 +4,7 @@ import com.sheoanna.monster_shop.dtos.review.ReviewMapper;
 import com.sheoanna.monster_shop.dtos.review.ReviewRequestDto;
 import com.sheoanna.monster_shop.dtos.review.ReviewResponseDto;
 import com.sheoanna.monster_shop.exception.product.ProductNotFoundException;
+import com.sheoanna.monster_shop.exception.review.ReviewNotFoundException;
 import com.sheoanna.monster_shop.models.Product;
 import com.sheoanna.monster_shop.models.Review;
 import com.sheoanna.monster_shop.repositories.ProductRepository;
@@ -25,24 +26,54 @@ public class ReviewService {
         this.productService = productService;
     }
 
-    public List<ReviewResponseDto> getAllReviews(){
-        List<Review> reviews = reviewRepository.findAll();
-        return reviews.stream().map(review -> ReviewMapper.entityToDto(review)).toList();
+    public List<ReviewResponseDto> getReviewsByProductId(Long productId) {
+        List<Review> reviews = reviewRepository.findByProductId(productId);
+        return reviews.stream()
+                .map(ReviewMapper::entityToDto)
+                .toList();
+    }
+
+    public ReviewResponseDto getReviewById(Long id) {
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(() -> new ReviewNotFoundException("Review with id " + id + " not found!"));
+        return ReviewMapper.entityToDto(review);
     }
 
     @Transactional
-    public ReviewResponseDto createReview(Long productId, ReviewRequestDto dto) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+    public ReviewResponseDto storeReview(ReviewRequestDto dto) {
+        Product product = productRepository.findById(dto.productId())
+                .orElseThrow(() -> new ProductNotFoundException("Product with id " + dto.productId() + " not found"));
 
         Review review = ReviewMapper.dtoToEntity(dto);
-
-        review.setProduct(product);//??? or put to dtos as args if posible change models from requirements
-
+        review.setProduct(product);
         reviewRepository.save(review);
+        productService.updateRatingAndCount(product);
+
+        return ReviewMapper.entityToDto(review);
+    }
+
+    @Transactional
+    public ReviewResponseDto updateReview(Long id, ReviewRequestDto dto) {
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(() -> new ReviewNotFoundException("Review with id " + id + " not found!"));
+
+        Product product = productRepository.findById(dto.productId())
+                .orElseThrow(() -> new ProductNotFoundException("Product with id " + dto.productId() + " not found"));
+
+        review.setProduct(product);
+        review.setBody(dto.body());
+        review.setUsername(dto.username());
+        review.setRating(dto.rating());
 
         productService.updateRatingAndCount(product);
 
         return ReviewMapper.entityToDto(review);
+    }
+
+    public void deleteReviewByID(Long id) {
+        if (!reviewRepository.existsById(id)) {
+            throw new ReviewNotFoundException("Review with id " + id + " not found!");
+        }
+        reviewRepository.deleteById(id);
     }
 }
