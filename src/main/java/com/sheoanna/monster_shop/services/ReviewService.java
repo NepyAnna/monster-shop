@@ -36,18 +36,35 @@ public class ReviewService {
     public ReviewResponseDto getReviewById(Long id) {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new ReviewNotFoundException("Review with id " + id + " not found!"));
-
         return ReviewMapper.entityToDto(review);
     }
 
     @Transactional
     public ReviewResponseDto storeReview(ReviewRequestDto dto) {
         Product product = productRepository.findById(dto.productId())
-                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product with id " + dto.productId() + " not found"));
 
         Review review = ReviewMapper.dtoToEntity(dto);
         review.setProduct(product);
         reviewRepository.save(review);
+        productService.updateRatingAndCount(product);
+
+        return ReviewMapper.entityToDto(review);
+    }
+
+    @Transactional
+    public ReviewResponseDto updateReview(Long id, ReviewRequestDto dto) {
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(() -> new ReviewNotFoundException("Review with id " + id + " not found!"));
+
+        Product product = productRepository.findById(dto.productId())
+                .orElseThrow(() -> new ProductNotFoundException("Product with id " + dto.productId() + " not found"));
+
+        review.setProduct(product);
+        review.setBody(dto.body());
+        review.setUsername(dto.username());
+        review.setRating(dto.rating());
+
         productService.updateRatingAndCount(product);
 
         return ReviewMapper.entityToDto(review);
