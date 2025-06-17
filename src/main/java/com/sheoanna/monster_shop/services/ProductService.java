@@ -44,14 +44,21 @@ public class ProductService {
         return ProductMapper.entityToDto(savedProduct);
     }
 
-   /* @Transactional
-    public ProductResponseDto updateProductByID(ProductRequestDto newProduct){
-        if (!productRepository.existsById(newProduct.id())) {
-            throw new ProductNotFoundException("Monster with id " + newProduct.id() + " not found!");
-        }
+    @Transactional
+    public ProductResponseDto updateProductByID(Long id, ProductRequestDto newProduct) {
+        Product existProduct = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with id " + id + " not found!"));
 
+        existProduct.setName(newProduct.name());
+        existProduct.setRating(newProduct.rating());
+        existProduct.setReviewCount(newProduct.reviewCount());
+        existProduct.setPrice(newProduct.price());
+        existProduct.setFeatured(newProduct.featured());
+        existProduct.setImageUrl(newProduct.imageUrl());
+
+        return ProductMapper.entityToDto(existProduct);
     }
-*/
+
     public void deleteProductByID(Long id) {
         if (!productRepository.existsById(id)) {
             throw new ProductNotFoundException("Product with id " + id + " not found!");

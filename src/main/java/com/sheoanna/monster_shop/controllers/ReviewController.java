@@ -24,24 +24,17 @@ public class ReviewController {
         return ResponseEntity.ok(reviews);
     }
 
-/*
-    @GetMapping("/{id}")
-    public ResponseEntity<ReviewResponseDto> getReviewById(@PathVariable Long id) {
-        ReviewResponseDto review = reviewService.getReviewById(id);
-        return ResponseEntity.ok(review);
-    }
-*/
-
     @PostMapping("")
     public ResponseEntity<ReviewResponseDto> createReview(@RequestBody ReviewRequestDto newReviewDto) {
         ReviewResponseDto createdReview = reviewService.storeReview(newReviewDto);
-        return ResponseEntity.ok().body(createdReview);
+        URI location = URI.create("/api/reviews/" + createdReview.productId());
+        return ResponseEntity.created(location).body(createdReview);
     }
 
-   @PutMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ReviewResponseDto> updateReview(@PathVariable Long id, @RequestBody ReviewRequestDto newReviewDto) {
-        ReviewResponseDto createdReview = reviewService.updateReview(id,newReviewDto);
-        return ResponseEntity.ok().body(createdReview);
+        ReviewResponseDto createdReview = reviewService.updateReview(id, newReviewDto);
+        return ResponseEntity.ok(createdReview);
     }
 
     @DeleteMapping("/{id}")
