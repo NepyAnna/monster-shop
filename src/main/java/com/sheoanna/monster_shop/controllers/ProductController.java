@@ -20,7 +20,7 @@ public class ProductController {
 
     @GetMapping
     @RequestMapping("")
-    public ResponseEntity<List<ProductResponseDto>> showAllProducts(){
+    public ResponseEntity<List<ProductResponseDto>> showAllProducts() {
         List<ProductResponseDto> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
@@ -33,13 +33,21 @@ public class ProductController {
     }
 
     @PostMapping("")
-    public  ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto newproduct){
+    public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto newproduct) {
         ProductResponseDto savedProduct = productService.storeProduct(newproduct);
-        URI location = URI.create("/products" + savedProduct.id());
+        URI location = URI.create("/products/" + savedProduct.id());
         return ResponseEntity.created(location).body(savedProduct);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDto newProductDto) {
+        ProductResponseDto updatedProduct = productService.updateProductByID(id, newProductDto);
+        return ResponseEntity.ok(updatedProduct);
+    }
+
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProductByID(@PathVariable Long id){
+    public ResponseEntity<Void> deleteProductByID(@PathVariable Long id) {
         productService.deleteProductByID(id);
         return ResponseEntity.ok().build();
     }
