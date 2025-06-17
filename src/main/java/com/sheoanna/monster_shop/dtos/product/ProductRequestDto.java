@@ -4,6 +4,7 @@ import jakarta.validation.constraints.*;
 
 public record ProductRequestDto(@Null
                                 Long id,
+
                                 @NotBlank
                                 @Size(min = 2, max = 50, message = "Name is required.")
                                 String name,

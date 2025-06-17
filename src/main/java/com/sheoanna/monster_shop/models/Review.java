@@ -1,15 +1,13 @@
 package com.sheoanna.monster_shop.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="reviews")
+@Table(name = "reviews")
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String username;
     private double rating;
     private String body;
@@ -22,13 +20,6 @@ public class Review {
     }
 
     public Review(String username, double rating, String body) {
-        this.username = username;
-        this.rating = rating;
-        this.body = body;
-    }
-
-    public Review(Long id, String username, double rating, String body) {
-        this.id = id;
         this.username = username;
         this.rating = rating;
         this.body = body;

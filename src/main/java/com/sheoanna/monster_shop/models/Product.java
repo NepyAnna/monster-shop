@@ -13,19 +13,19 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="name", length = 50, nullable = false)
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
 
     @Column(name = "price", nullable = false)
     private double price;
 
-    @Column(name="image_url", nullable = false)
+    @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-    @Column(name="rating")
+    @Column(name = "rating")
     private double rating;
 
-    @Column(name="review_count")
+    @Column(name = "review_count")
     private int reviewCount;
 
     @Column(name = "featured")

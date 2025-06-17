@@ -38,4 +38,9 @@ public class ProductController {
         URI location = URI.create("/products" + savedProduct.id());
         return ResponseEntity.created(location).body(savedProduct);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProductByID(@PathVariable Long id){
+        productService.deleteProductByID(id);
+        return ResponseEntity.ok().build();
+    }
 }
