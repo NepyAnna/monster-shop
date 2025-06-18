@@ -2,13 +2,24 @@
 
 This is the backend application for **Monster Shop**, an e-commerce platform where users can browse products, leave reviews, and rate items. The backend is built with **Java 21** and **Spring Boot**, using **MySQL** as the relational database.
 
+## Project Structure
+```text
+src
+├── controllers # REST Controllers
+├── dtos # Data Transfer Objects
+├── models # JPA Entities
+├── repositories # Spring Data Repositories
+├── services # Business Logic Layer
+├── global # Global Exception handler
+└── exceptions # Custom exceptions and handlers
+```
 ## Technologies Used
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
-![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
-![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 ![Apache Maven](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white)
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
 ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![draw.io](https://img.shields.io/badge/draw.io-F08705?style=for-the-badge&logo=diagramsdotnet&logoColor=white)
@@ -32,9 +43,11 @@ This is the backend application for **Monster Shop**, an e-commerce platform whe
 
 ## ER Diagram(Crow's feet)
 
+[![temp-Image-XA8-Zzo.avif](https://i.postimg.cc/gjtrff9Y/temp-Image-XA8-Zzo.avif)](https://postimg.cc/rRW84ZFb)
 
 ## ClassDiagram
 
+[View Class Diagram] (https://drive.google.com/file/d/1_3cOLPLDzqzyN44YltZc00l1cDoxNMAq/view?usp=sharing)
 
 ## Clone the Repository
 
