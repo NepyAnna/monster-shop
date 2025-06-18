@@ -20,7 +20,7 @@ public class ProductController {
 
     @GetMapping
     @RequestMapping("")
-    public ResponseEntity<List<ProductResponseDto>> showAllProducts() {
+    public ResponseEntity<List<ProductResponseDto>> index() {
         List<ProductResponseDto> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
@@ -35,7 +35,7 @@ public class ProductController {
     @PostMapping("")
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto newproduct) {
         ProductResponseDto savedProduct = productService.storeProduct(newproduct);
-        URI location = URI.create("/products/" + savedProduct.id());
+        URI location = URI.create("api/products/" + savedProduct.id());
         return ResponseEntity.created(location).body(savedProduct);
     }
 
