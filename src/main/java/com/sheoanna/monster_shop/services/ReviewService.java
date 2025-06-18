@@ -71,9 +71,13 @@ public class ReviewService {
     }
 
     public void deleteReviewByID(Long id) {
-        if (!reviewRepository.existsById(id)) {
-            throw new ReviewNotFoundException("Review with id " + id + " not found!");
-        }
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(() -> new ReviewNotFoundException("Review with id " + id + " not found!"));
+
+        Product product = review.getProduct();
+
         reviewRepository.deleteById(id);
+
+        productService.updateRatingAndCount(product);
     }
 }
