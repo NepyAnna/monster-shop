@@ -47,6 +47,15 @@ public class Product {
         this.featured = featured;
     }
 
+    public Product(Long id, String name, double price, boolean featured, double rating, int reviewCount) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.featured = featured;
+        this.rating = rating;
+        this.reviewCount = reviewCount;
+    }
+
     public Long getId() {
         return id;
     }
