@@ -34,7 +34,6 @@ class ProductServiceTest {
     @Test
     void testGetAllProducts() {
         List<Product> productList = new ArrayList<Product>();
-        //List<ReviewResponseDto> reviews = new ArrayList<ReviewResponseDto>();
         Product product1 = new Product("Monster1",
                 3.55,
                 "https://images.unsplash.com/photo-1588422333078-44ad73367bcb?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
